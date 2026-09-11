@@ -6,8 +6,6 @@
 .pnp.js
 .yarn/install-state.gz
 package-lock.json
-dist
-dist-ssr
 
 # testing
 /coverage
