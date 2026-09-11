@@ -43,7 +43,12 @@ export const signup = async (req, res) => {
     // JWT validation
     generateTokenAndSetCookie(res, user._id);
 
-    await sendVerificationEmail(user.email, verificationToken);
+    try {
+      await sendVerificationEmail(user.email, verificationToken);
+    } catch (emailError) {
+      await User.findByIdAndDelete(user._id);
+      throw emailError;
+    }
 
 
     res.status(201).json({

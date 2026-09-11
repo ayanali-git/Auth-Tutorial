@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 
-const API_URL = import.meta.env.MODE === "development" ? "http://localhost:5000/api/auth" : "/api/auth";
+const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.MODE === "development" ? "http://localhost:5000/api/auth" : "/api/auth");
 
 axios.defaults.withCredentials = true;
 
@@ -64,9 +64,13 @@ export const useAuthStore = create((set) => ({
 		set({ isCheckingAuth: true, error: null });
 		try {
 			const response = await axios.get(`${API_URL}/check-auth`);
-			set({ user: response.data.user, isAuthenticated: true, isCheckingAuth: false });
+			if (response.data && response.data.user) {
+				set({ user: response.data.user, isAuthenticated: true, isCheckingAuth: false });
+			} else {
+				set({ user: null, isAuthenticated: false, isCheckingAuth: false });
+			}
 		} catch (error) {
-			set({ error: null, isCheckingAuth: false, isAuthenticated: false });
+			set({ user: null, error: null, isCheckingAuth: false, isAuthenticated: false });
 		}
 	},
 	forgotPassword: async (email) => {

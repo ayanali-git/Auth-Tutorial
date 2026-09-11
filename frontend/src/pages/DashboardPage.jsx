@@ -31,10 +31,10 @@ const DashboardPage = () => {
             Profile Information
           </h3>
           <p className="text-gray-300 font-bold">
-            Name: <span className="font-normal">{user.name}</span>
+            Name: <span className="font-normal">{user?.name}</span>
           </p>
           <p className="text-gray-300 font-bold">
-            Email: <span className="font-normal">{user.email}</span>
+            Email: <span className="font-normal">{user?.email}</span>
           </p>
         </motion.div>
         <motion.div
@@ -48,16 +48,18 @@ const DashboardPage = () => {
           </h3>
           <p className="text-gray-300">
             <span className="font-bold">Joined: </span>
-            {new Date(user.createdAt).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
+            {user?.createdAt
+              ? new Date(user.createdAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
+              : "N/A"}
           </p>
           <p className="text-gray-300">
             <span className="font-bold">Last Login: </span>
 
-            {formatDate(user.lastLogin)}
+            {user?.lastLogin ? formatDate(user.lastLogin) : "N/A"}
           </p>
         </motion.div>
       </div>
